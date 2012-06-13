@@ -65,13 +65,5 @@
   <scm>
     <url>https://github.com/skorg/ppi4j</url>
   </scm>
-
-  <distributionManagement>
-    <site>
-      <id>org.scriptkitty.ppi4j-ast</id>
-      <name>ppi4j</name>
-      <url>http://www.scriptkitty.org</url>
-    </site>
-  </distributionManagement>
   
 </project>
