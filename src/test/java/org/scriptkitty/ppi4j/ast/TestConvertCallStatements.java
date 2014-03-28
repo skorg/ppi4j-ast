@@ -6,8 +6,6 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
-
-
 import org.scriptkitty.ppi4j.Document;
 import org.scriptkitty.ppi4j.Token;
 import org.scriptkitty.ppi4j.ast.state.PackageContainer;
@@ -17,11 +15,7 @@ import org.scriptkitty.ppi4j.util.TestCaseProvider;
 
 public class TestConvertCallStatements extends AbstractConverterTest
 {
-    //~ Instance fields
-
     @Mock private StatementContainer mContainer;
-
-    //~ Methods
 
     @Before @Override public void setup()
     {

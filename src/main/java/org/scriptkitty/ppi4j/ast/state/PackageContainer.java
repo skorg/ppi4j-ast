@@ -9,17 +9,17 @@ public abstract class PackageContainer extends IASTContainer.AbstractContainer
             // empty implementation
         }
 
-        @Override public void setEnd(int offset)
-        {
-            // empty implementation                     
-        }
-
         @Override public String getPackageName()
-        {            
+        {
             return null;
         }
+
+        @Override public void setEnd(int offset)
+        {
+            // empty implementation
+        }
     };
-    
+
     protected PackageContainer(Object pkg)
     {
         super(pkg);
@@ -29,6 +29,6 @@ public abstract class PackageContainer extends IASTContainer.AbstractContainer
     {
         // no-op
     }
-    
+
     public abstract String getPackageName();
 }

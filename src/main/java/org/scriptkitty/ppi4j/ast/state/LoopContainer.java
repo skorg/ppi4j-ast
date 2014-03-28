@@ -11,34 +11,28 @@ public abstract class LoopContainer extends IASTContainer.AbstractContainer
 
         @Override protected void addBody(Object stmt)
         {
-            // no-op            
+            // no-op
         }
 
         @Override protected void addConditional(Object stmt)
         {
-            // no-op            
+            // no-op
         }
 
         @Override protected void addContinue(Object stmt)
         {
-            // no-op            
+            // no-op
         }
     };
-    
-    //~ Instance fields
 
     private boolean eBody;
     private boolean eCond;
     private boolean eCont;
 
-    //~ Constructors
-
     protected LoopContainer(Object stmt)
     {
         super(stmt);
     }
-
-    //~ Methods
 
     @Override public final void add(Object stmt)
     {

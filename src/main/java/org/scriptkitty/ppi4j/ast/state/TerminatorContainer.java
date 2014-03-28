@@ -9,6 +9,6 @@ public abstract class TerminatorContainer extends StatementContainer
 
     @Override public final void add(Object e)
     {
-        throw new RuntimeException("attemted to add [" + e + "] to the terminator container"); 
+        throw new RuntimeException("attemted to add [" + e + "] to the terminator container");
     }
 }

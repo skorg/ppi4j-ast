@@ -17,22 +17,22 @@ public abstract class IncludeContainer extends IASTContainer.AbstractContainer
             // no-op
         }
     };
-    
+
     protected IncludeContainer(Object include)
     {
         super(include);
     }
-    
-    public void setModuleVersion(String moduleVersion)
-    {
-        // default no-op
-    }
-    
+
     public void setDeclaringPackage(String currentPackageName)
     {
         // default no-op
     }
-    
+
+    public void setModuleVersion(String moduleVersion)
+    {
+        // default no-op
+    }
+
     public void setType(Statement.Type type)
     {
         // default no-op

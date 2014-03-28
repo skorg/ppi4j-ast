@@ -1,9 +1,8 @@
 package org.scriptkitty.ppi4j.ast;
 
-
-
-
-
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
 
 import org.scriptkitty.ppi4j.Document;
 import org.scriptkitty.ppi4j.Element;
@@ -34,21 +33,17 @@ import org.scriptkitty.ppi4j.structure.BlockStructure;
 import org.scriptkitty.ppi4j.util.IErrorProxy;
 import org.scriptkitty.ppi4j.visitor.AbstractNodeVisitor;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ListIterator;
-
 
 public final class ASTBuildVisitor extends AbstractNodeVisitor // AbstractExtendedNodeVisitor
 {
     //~ Instance fields
 
+    private boolean incTerm;
+
     private IASTConverter converter;
 
-    private boolean incTerm;
-    private int lastOffset;
-
     private IErrorProxy proxy;
+    private int lastOffset;
     private StateManager state = new StateManager();
 
     //~ Constructors
@@ -362,7 +357,7 @@ public final class ASTBuildVisitor extends AbstractNodeVisitor // AbstractExtend
     {
         private boolean initialized;
 
-        private LinkedList<IASTContainer> stack = new LinkedList<IASTContainer>();
+        private LinkedList<IASTContainer> stack = new LinkedList<>();
 
         void addToPackage(IASTContainer container)
         {
@@ -463,8 +458,8 @@ public final class ASTBuildVisitor extends AbstractNodeVisitor // AbstractExtend
             /*
              * don't add the container to the parent if it's empty...
              *
-             * this is done as a convienece so an IASTConverter can safely return 'null' if it doesn't know how to process
-             * a statement and not have to worry about handling that case in their implementation.
+             * this is done as a convienece so an IASTConverter can safely return 'null' if it doesn't know how to process a statement and not
+             * have to worry about handling that case in their implementation.
              *
              * it is still added to the stack however so it can be 'popped' off when processing is done
              */

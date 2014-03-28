@@ -10,9 +10,24 @@ import org.scriptkitty.ppi4j.ast.state.StatementContainer;
 import org.scriptkitty.ppi4j.ast.state.SubContainer;
 import org.scriptkitty.ppi4j.ast.state.TerminatorContainer;
 
+
 public interface IASTObjectCreator
 {
     BlockContainer createBlock(int start, boolean isBody);
+
+    StatementContainer createBuiltinCall(int start, Token bToken);
+
+    LoopContainer createFor(int start);
+
+    LoopContainer createForeach(int start);
+
+    IncludeContainer createInclude(int startOffset, Token mToken);
+
+    PackageContainer createMainPackage();
+
+    StatementContainer createMethodCall(int start, Token cToken, Token mToken);
+
+    ModuleContainer createModule();
 
     PackageContainer createPackage(int start, Token pName);
 
@@ -20,25 +35,11 @@ public interface IASTObjectCreator
 
     SubContainer createSubroutine(int start, Token sName);
 
-    StatementContainer createMethodCall(int start, Token cToken, Token mToken);
-    
+    // LoopContainer createIf(int start);
+
     TerminatorContainer createTerminator(int start);
-    
-    StatementContainer createBuiltinCall(int start, Token bToken);
-    
-    ModuleContainer createModule();
-    
-    PackageContainer createMainPackage();
-
-    LoopContainer createFor(int start);
-
-    LoopContainer createForeach(int start);
-
-    //LoopContainer createIf(int start);
-
-    LoopContainer createWhile(int start);
 
     LoopContainer createUntil(int start);
 
-    IncludeContainer createInclude(int startOffset, Token mToken);
+    LoopContainer createWhile(int start);
 }

@@ -7,8 +7,8 @@ import java.util.ServiceLoader;
 
 import org.scriptkitty.ppi4j.Element;
 import org.scriptkitty.ppi4j.Statement;
-import org.scriptkitty.ppi4j.Token;
 import org.scriptkitty.ppi4j.Statement.Type;
+import org.scriptkitty.ppi4j.Token;
 import org.scriptkitty.ppi4j.ast.ASTBuildVisitor.StateManager;
 import org.scriptkitty.ppi4j.ast.converters.IStatementConverter;
 import org.scriptkitty.ppi4j.ast.state.BlockContainer;
@@ -50,8 +50,8 @@ public class ASTConverter implements IASTConverter
     {
         this.creator = creator;
         
-        this.stmtDelegate = new ConverterDelegate<Statement, StatementContainer>(creator);
-        this.includeDelegate = new ConverterDelegate<IncludeStatement, IncludeContainer>(creator);
+        this.stmtDelegate = new ConverterDelegate<>(creator);
+        this.includeDelegate = new ConverterDelegate<>(creator);
     }
 
     //~ Methods
@@ -185,7 +185,7 @@ public class ASTConverter implements IASTConverter
         }
         else
         {
-            LinkedList<Element> elements = new LinkedList<Element>(stmt.getSigChildren());
+            LinkedList<Element> elements = new LinkedList<>(stmt.getSigChildren());
 
             if (stmt.isComplete())
             {
@@ -232,6 +232,25 @@ public class ASTConverter implements IASTConverter
     final void setStateManager(StateManager state)
     {
         this.state = state;
+    }
+
+    private void addBaseClassesToPackage(IncludeStatement stmt)
+    {
+        List<String> classes = new ArrayList<>(); 
+        PackageContainer container = state.getPackage();
+        
+        for (Element token : stmt.getArguments())
+        {
+            if (token instanceof QLWordsToken)
+            {
+                classes.addAll(((QLWordsToken) token).getLiteral());
+            }
+        }
+        
+        for (String clazz : classes)
+        {
+            container.addSuperClass(clazz);
+        }
     }
 
     private void addProperties(SubContainer container, SubStatement stmt)
@@ -295,25 +314,6 @@ public class ASTConverter implements IASTConverter
 
         return StatementContainer.NULL;
     }
-
-    private void addBaseClassesToPackage(IncludeStatement stmt)
-    {
-        List<String> classes = new ArrayList<String>(); 
-        PackageContainer container = state.getPackage();
-        
-        for (Element token : stmt.getArguments())
-        {
-            if (token instanceof QLWordsToken)
-            {
-                classes.addAll(((QLWordsToken) token).getLiteral());
-            }
-        }
-        
-        for (String clazz : classes)
-        {
-            container.addSuperClass(clazz);
-        }
-    }
        
     private boolean isMainPackage()
     {
@@ -334,19 +334,6 @@ public class ASTConverter implements IASTConverter
             this.creator = creator;
         }
 
-        public boolean converts(S stmt)
-        {
-            IStatementConverter<S, C> converter = getHandler(stmt.getClass());
-
-            if (converts(converter, stmt))
-            {
-                this.converter = converter;
-                return true;
-            }
-
-            return false;
-        }
-
         public C convert(S stmt)
         {
             if (!converts(converter, stmt))
@@ -362,6 +349,19 @@ public class ASTConverter implements IASTConverter
             converter = null; 
             
             return container;
+        }
+
+        public boolean converts(S stmt)
+        {
+            IStatementConverter<S, C> converter = getHandler(stmt.getClass());
+
+            if (converts(converter, stmt))
+            {
+                this.converter = converter;
+                return true;
+            }
+
+            return false;
         }
 
         private boolean converts(IStatementConverter<S, C> converter, S stmt)

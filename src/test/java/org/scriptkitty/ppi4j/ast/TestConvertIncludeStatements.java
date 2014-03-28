@@ -2,26 +2,27 @@ package org.scriptkitty.ppi4j.ast;
 
 import org.junit.Before;
 import org.junit.Test;
+
 import org.mockito.Mock;
 import org.mockito.Mockito;
+
 import org.scriptkitty.ppi4j.Document;
 import org.scriptkitty.ppi4j.Token;
 import org.scriptkitty.ppi4j.ast.state.IncludeContainer;
 import org.scriptkitty.ppi4j.ast.state.PackageContainer;
 import org.scriptkitty.ppi4j.util.TestCaseProvider;
 
+
 public class TestConvertIncludeStatements extends AbstractConverterTest
 {
     @Mock private IncludeContainer mContainer;
-
-    //~ Methods
 
     @Before @Override public void setup()
     {
         super.setup();
 
         // only testing 'simple' statements here, so setup as if we were a script
-        Mockito.when(mCreator.createMainPackage()).thenReturn(PackageContainer.NULL);        
+        Mockito.when(mCreator.createMainPackage()).thenReturn(PackageContainer.NULL);
         Mockito.when(mContainer.isEmpty()).thenReturn(false);
     }
 
