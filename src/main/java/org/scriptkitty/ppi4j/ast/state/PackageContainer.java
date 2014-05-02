@@ -1,10 +1,10 @@
 package org.scriptkitty.ppi4j.ast.state;
 
-public abstract class PackageContainer extends IASTContainer.AbstractContainer
+public abstract class PackageContainer<T> extends IASTContainer.AbstractContainer<T>
 {
-    public static final PackageContainer NULL = new PackageContainer(null)
+    public static final PackageContainer<Void> NULL = new PackageContainer<Void>(null)
     {
-        @Override public void add(Object e)
+        @Override public void add(Void e)
         {
             // empty implementation
         }
@@ -20,7 +20,7 @@ public abstract class PackageContainer extends IASTContainer.AbstractContainer
         }
     };
 
-    protected PackageContainer(Object pkg)
+    protected PackageContainer(T pkg)
     {
         super(pkg);
     }

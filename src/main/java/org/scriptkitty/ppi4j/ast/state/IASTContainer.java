@@ -1,25 +1,25 @@
 package org.scriptkitty.ppi4j.ast.state;
 
-public interface IASTContainer
+public interface IASTContainer<T>
 {
     /*
      * note: generics could have been used here, but that would have required setting a type on the visitor on down the implmentation and it
      * just didn't seem worth it.
      */
 
-    void add(Object e);
+    void add(T e);
 
-    Object get();
+    T get();
 
     boolean isEmpty();
 
     void setEnd(int offset);
 
-    abstract class AbstractContainer implements IASTContainer
+    static abstract class AbstractContainer<T> implements IASTContainer<T>
     {
-        private Object contained;
+        private T contained;
 
-        protected AbstractContainer(Object toContain)
+        protected AbstractContainer(T toContain)
         {
             this.contained = toContain;
         }
@@ -27,7 +27,7 @@ public interface IASTContainer
         /*
          * @see org.scriptkitty.ppi4j.ast.IASTContainer#get()
          */
-        @Override public Object get()
+        @Override public T get()
         {
             return contained;
         }
