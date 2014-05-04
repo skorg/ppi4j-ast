@@ -7,20 +7,16 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.scriptkitty.ppi4j.Document;
 import org.scriptkitty.ppi4j.Token;
-import org.scriptkitty.ppi4j.ast.state.ModuleContainer;
+import org.scriptkitty.ppi4j.ast.container.ModuleContainer;
 import org.scriptkitty.ppi4j.util.IErrorProxy;
 import org.scriptkitty.ppi4j.util.NullErrorProxy;
 
 
 abstract class AbstractConverterTest
 {
-    //~ Instance fields
-
     @Mock protected IASTObjectCreator mCreator;
 
     private final IErrorProxy proxy = NullErrorProxy.getInstance();
-
-    //~ Methods
 
     @Before public void setup()
     {
@@ -47,8 +43,7 @@ abstract class AbstractConverterTest
 
     protected final void visit(Document document, IASTObjectCreator mock)
     {
-        ASTConverter converter = new ASTConverter(mock);
-        ASTBuildVisitor visitor = new ASTBuildVisitor(converter, proxy);
+        ASTBuildVisitor visitor = new ASTBuildVisitor(mCreator, proxy);
 
         document.accept(visitor);
         document.destroy();

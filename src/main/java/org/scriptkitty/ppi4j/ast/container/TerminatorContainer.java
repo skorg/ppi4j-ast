@@ -1,8 +1,8 @@
-package org.scriptkitty.ppi4j.ast.state;
+package org.scriptkitty.ppi4j.ast.container;
 
-public abstract class TerminatorContainer extends StatementContainer
+public abstract class TerminatorContainer<T> extends StatementContainer<T>
 {
-    protected TerminatorContainer(Object terminator)
+    protected TerminatorContainer(T terminator)
     {
         super(terminator);
     }

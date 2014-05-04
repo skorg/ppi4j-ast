@@ -2,20 +2,18 @@ package org.scriptkitty.ppi4j.ast;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import org.mockito.Mock;
 import org.mockito.Mockito;
-
 import org.scriptkitty.ppi4j.Document;
 import org.scriptkitty.ppi4j.Token;
-import org.scriptkitty.ppi4j.ast.state.PackageContainer;
-import org.scriptkitty.ppi4j.ast.state.StatementContainer;
+import org.scriptkitty.ppi4j.ast.container.PackageContainer;
+import org.scriptkitty.ppi4j.ast.container.StatementContainer;
 import org.scriptkitty.ppi4j.util.TestCaseProvider;
 
 
 public class TestConvertCallStatements extends AbstractConverterTest
 {
-    @Mock private StatementContainer mContainer;
+    @Mock private StatementContainer<Object> mContainer;
 
     @Before @Override public void setup()
     {

@@ -1,13 +1,13 @@
 package org.scriptkitty.ppi4j.ast;
 
 import org.scriptkitty.ppi4j.Statement;
-import org.scriptkitty.ppi4j.ast.state.BlockContainer;
-import org.scriptkitty.ppi4j.ast.state.IncludeContainer;
-import org.scriptkitty.ppi4j.ast.state.LoopContainer;
-import org.scriptkitty.ppi4j.ast.state.ModuleContainer;
-import org.scriptkitty.ppi4j.ast.state.PackageContainer;
-import org.scriptkitty.ppi4j.ast.state.StatementContainer;
-import org.scriptkitty.ppi4j.ast.state.SubContainer;
+import org.scriptkitty.ppi4j.ast.container.BlockContainer;
+import org.scriptkitty.ppi4j.ast.container.IncludeContainer;
+import org.scriptkitty.ppi4j.ast.container.LoopContainer;
+import org.scriptkitty.ppi4j.ast.container.ModuleContainer;
+import org.scriptkitty.ppi4j.ast.container.PackageContainer;
+import org.scriptkitty.ppi4j.ast.container.StatementContainer;
+import org.scriptkitty.ppi4j.ast.container.SubContainer;
 import org.scriptkitty.ppi4j.statement.CompoundStatement;
 import org.scriptkitty.ppi4j.statement.IncludeStatement;
 import org.scriptkitty.ppi4j.statement.PackageStatement;
@@ -18,23 +18,21 @@ import org.scriptkitty.ppi4j.structure.BlockStructure;
 
 public interface IASTConverter
 {
-    //~ Methods
+    BlockContainer<?> convert(BlockStructure struct);
 
-    BlockContainer convert(BlockStructure struct);
+    LoopContainer<?> convert(CompoundStatement stmt);
 
-    LoopContainer convert(CompoundStatement stmt);
+    IncludeContainer<?> convert(IncludeStatement stmt);
 
-    IncludeContainer convert(IncludeStatement stmt);
+    PackageContainer<?> convert(PackageStatement stmt);
 
-    PackageContainer convert(PackageStatement stmt);
+    SubContainer<?> convert(ScheduledStatement stmt);
 
-    SubContainer convert(ScheduledStatement stmt);
+    StatementContainer<?> convert(Statement stmt);
 
-    StatementContainer convert(Statement stmt);
+    SubContainer<?> convert(SubStatement stmt);
 
-    SubContainer convert(SubStatement stmt);
-
-    PackageContainer createMainPackage();
-
-    ModuleContainer startDocument();
+    PackageContainer<?> createMainPackage();
+   
+    ModuleContainer<?> startDocument();
 }

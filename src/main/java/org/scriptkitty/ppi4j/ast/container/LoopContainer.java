@@ -1,8 +1,8 @@
-package org.scriptkitty.ppi4j.ast.state;
+package org.scriptkitty.ppi4j.ast.container;
 
-public abstract class LoopContainer extends IASTContainer.AbstractContainer
+public abstract class LoopContainer<T> extends AbstractContainer<T>
 {
-    public static final LoopContainer NULL = new LoopContainer(null)
+    public static LoopContainer<Object> NULL = new LoopContainer<Object>(null)
     {
         @Override public void setEnd(int offset)
         {
@@ -26,10 +26,12 @@ public abstract class LoopContainer extends IASTContainer.AbstractContainer
     };
 
     private boolean eBody;
+
     private boolean eCond;
+
     private boolean eCont;
 
-    protected LoopContainer(Object stmt)
+    protected LoopContainer(T stmt)
     {
         super(stmt);
     }
@@ -50,6 +52,7 @@ public abstract class LoopContainer extends IASTContainer.AbstractContainer
         }
         else
         {
+            // TODO: replace w/ custom exception
             // this should never happen...
             throw new RuntimeException("unable to add statement to contained object");
         }

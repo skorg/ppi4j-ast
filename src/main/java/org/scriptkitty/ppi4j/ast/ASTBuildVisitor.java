@@ -1,19 +1,17 @@
 package org.scriptkitty.ppi4j.ast;
 
-import java.util.LinkedList;
 import java.util.List;
-import java.util.ListIterator;
 
 import org.scriptkitty.ppi4j.Document;
 import org.scriptkitty.ppi4j.Element;
 import org.scriptkitty.ppi4j.Node;
 import org.scriptkitty.ppi4j.Statement;
 import org.scriptkitty.ppi4j.Token;
-import org.scriptkitty.ppi4j.ast.state.BlockContainer;
-import org.scriptkitty.ppi4j.ast.state.IASTContainer;
-import org.scriptkitty.ppi4j.ast.state.LoopContainer;
-import org.scriptkitty.ppi4j.ast.state.PackageContainer;
-import org.scriptkitty.ppi4j.ast.state.TerminatorContainer;
+import org.scriptkitty.ppi4j.ast.container.BlockContainer;
+import org.scriptkitty.ppi4j.ast.container.LoopContainer;
+import org.scriptkitty.ppi4j.ast.container.PackageContainer;
+import org.scriptkitty.ppi4j.internal.ASTConverter;
+import org.scriptkitty.ppi4j.internal.StateManager;
 import org.scriptkitty.ppi4j.statement.BreakStatement;
 import org.scriptkitty.ppi4j.statement.CompoundStatement;
 import org.scriptkitty.ppi4j.statement.DataStatement;
@@ -34,34 +32,24 @@ import org.scriptkitty.ppi4j.util.IErrorProxy;
 import org.scriptkitty.ppi4j.visitor.AbstractNodeVisitor;
 
 
-public final class ASTBuildVisitor extends AbstractNodeVisitor // AbstractExtendedNodeVisitor
+public final class ASTBuildVisitor extends AbstractNodeVisitor
 {
-    //~ Instance fields
-
     private boolean incTerm;
 
     private IASTConverter converter;
-
-    private IErrorProxy proxy;
+    private StateManager state;
+    
+    
+    //private IErrorProxy proxy;
     private int lastOffset;
-    private StateManager state = new StateManager();
 
-    //~ Constructors
-
-    public ASTBuildVisitor(IASTConverter converter, IErrorProxy proxy)
+    public ASTBuildVisitor(IASTObjectCreator creator, IErrorProxy proxy)
     {
-        this.proxy = proxy;
-
-        if (converter instanceof ASTConverter)
-        {
-            ((ASTConverter) converter).setStateManager(state);
-        }
-
-        this.converter = converter;
+        this.state = new StateManager();
+        this.converter = new ASTConverter(creator, state);
+        
     }
-
-    //~ Methods
-
+    
     public void includeTerminator(boolean incTerm)
     {
         this.incTerm = incTerm;
@@ -105,14 +93,14 @@ public final class ASTBuildVisitor extends AbstractNodeVisitor // AbstractExtend
 
         if (stmt.getType() == Statement.Type.CONTINUE)
         {
-            BlockContainer container = converter.convert(stmt.getBody());
+            BlockContainer<?> container = converter.convert(stmt.getBody());
             state.addToParent(container);
 
             visit(stmt.getBody());
         }
         else
         {
-            LoopContainer container = converter.convert(stmt);
+            LoopContainer<?> container = converter.convert(stmt);
             state.addToParent(container);
 
             if (stmt.hasConditional())
@@ -237,7 +225,7 @@ public final class ASTBuildVisitor extends AbstractNodeVisitor // AbstractExtend
             state.pop(lastOffset);
         }
 
-        PackageContainer container = converter.convert(stmt);
+        PackageContainer<?> container = converter.convert(stmt);
         state.addToParent(container);
 
         visitChildren(stmt);
@@ -349,133 +337,5 @@ public final class ASTBuildVisitor extends AbstractNodeVisitor // AbstractExtend
     @Override protected List<Element> getToVisit(Node node)
     {
         return node.getElements();
-    }
-
-    //~ Inner Classes
-
-    class StateManager
-    {
-        private boolean initialized;
-
-        private LinkedList<IASTContainer> stack = new LinkedList<>();
-
-        void addToPackage(IASTContainer container)
-        {
-            if (!state.hasPackage())
-            {
-                addToParent(converter.createMainPackage());
-            }
-
-            add(getPackage(), container);
-        }
-
-        void addToParent(IASTContainer container)
-        {
-            if (stack.isEmpty())
-            {
-                throw new RuntimeException("unable to add container, perhaps it was not initialized");
-            }
-
-            add(stack.getLast(), container);
-        }
-
-        void ensurePackage()
-        {
-            if (!hasPackage())
-            {
-                addToParent(converter.createMainPackage());
-            }
-        }
-
-        PackageContainer getPackage()
-        {
-            IASTContainer container = stack.getLast();
-
-            if (container instanceof PackageContainer)
-            {
-                return (PackageContainer) container;
-            }
-
-            ListIterator<IASTContainer> iterator = stack.listIterator(stack.size());
-            while (iterator.hasPrevious())
-            {
-                if ((container = iterator.previous()) instanceof PackageContainer)
-                {
-                    return (PackageContainer) container;
-                }
-            }
-
-            return null;
-        }
-
-        boolean hasPackage()
-        {
-            return (getPackage() != null);
-        }
-
-        void initialize(IASTContainer container)
-        {
-            if (initialized)
-            {
-                throw new RuntimeException("state manager already initialized");
-            }
-
-            stack.add(container);
-            initialized = true;
-        }
-
-        boolean isTop(Class<? extends IASTContainer> clazz)
-        {
-            if (stack.isEmpty())
-            {
-                return false;
-            }
-
-            return (stack.getLast().getClass().getSuperclass() == clazz);
-        }
-
-        void pop(int offset)
-        {
-            IASTContainer container = stack.removeLast();
-
-            // if the container's empty, don't set an offset
-            if (!container.isEmpty())
-            {
-                container.setEnd(offset);
-            }
-        }
-
-        void terminate(int offset)
-        {
-            while (!stack.isEmpty())
-            {
-                pop(offset);
-            }
-        }
-
-        private void add(IASTContainer parent, IASTContainer container)
-        {
-            /*
-             * don't add the container to the parent if it's empty...
-             *
-             * this is done as a convienece so an IASTConverter can safely return 'null' if it doesn't know how to process a statement and not
-             * have to worry about handling that case in their implementation.
-             *
-             * it is still added to the stack however so it can be 'popped' off when processing is done
-             */
-            if (!container.isEmpty())
-            {
-                if (container instanceof TerminatorContainer)
-                {
-                    stack.getFirst().add(container.get());
-                }
-                else
-                {
-                    parent.add(container.get());
-                }
-            }
-
-            stack.add(container);
-        }
     }
 }

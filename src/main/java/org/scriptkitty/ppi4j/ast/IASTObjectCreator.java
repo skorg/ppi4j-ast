@@ -1,45 +1,45 @@
 package org.scriptkitty.ppi4j.ast;
 
 import org.scriptkitty.ppi4j.Token;
-import org.scriptkitty.ppi4j.ast.state.BlockContainer;
-import org.scriptkitty.ppi4j.ast.state.IncludeContainer;
-import org.scriptkitty.ppi4j.ast.state.LoopContainer;
-import org.scriptkitty.ppi4j.ast.state.ModuleContainer;
-import org.scriptkitty.ppi4j.ast.state.PackageContainer;
-import org.scriptkitty.ppi4j.ast.state.StatementContainer;
-import org.scriptkitty.ppi4j.ast.state.SubContainer;
-import org.scriptkitty.ppi4j.ast.state.TerminatorContainer;
+import org.scriptkitty.ppi4j.ast.container.BlockContainer;
+import org.scriptkitty.ppi4j.ast.container.IncludeContainer;
+import org.scriptkitty.ppi4j.ast.container.LoopContainer;
+import org.scriptkitty.ppi4j.ast.container.ModuleContainer;
+import org.scriptkitty.ppi4j.ast.container.PackageContainer;
+import org.scriptkitty.ppi4j.ast.container.StatementContainer;
+import org.scriptkitty.ppi4j.ast.container.SubContainer;
+import org.scriptkitty.ppi4j.ast.container.TerminatorContainer;
 
 
 public interface IASTObjectCreator
 {
-    BlockContainer createBlock(int start, boolean isBody);
+    <T> BlockContainer<T> createBlock(int start, boolean isBody);
 
-    StatementContainer createBuiltinCall(int start, Token bToken);
+    <T> StatementContainer<T> createBuiltinCall(int start, Token bToken);
 
-    LoopContainer createFor(int start);
+    <T> LoopContainer<T> createFor(int start);
 
-    LoopContainer createForeach(int start);
+    <T> LoopContainer<T> createForeach(int start);
 
-    IncludeContainer createInclude(int startOffset, Token mToken);
+    <T> IncludeContainer<T> createInclude(int startOffset, Token mToken);
 
-    PackageContainer createMainPackage();
+    <T> PackageContainer<T> createMainPackage();
 
-    StatementContainer createMethodCall(int start, Token cToken, Token mToken);
+    <T>StatementContainer<T> createMethodCall(int start, Token cToken, Token mToken);
 
-    ModuleContainer createModule();
+    <T> ModuleContainer<T> createModule();
 
-    PackageContainer createPackage(int start, Token pName);
+    <T>PackageContainer<T> createPackage(int start, Token pName);
 
-    SubContainer createScheduled(int start, Token sName);
+    <T>SubContainer<T> createScheduled(int start, Token sName);
 
-    SubContainer createSubroutine(int start, Token sName);
+    <T>SubContainer<T> createSubroutine(int start, Token sName);
 
-    // LoopContainer createIf(int start);
+    //<T> LoopContainer<T> createIf(int start);
 
-    TerminatorContainer createTerminator(int start);
+    <T>TerminatorContainer<T> createTerminator(int start);
 
-    LoopContainer createUntil(int start);
+    <T>LoopContainer<T> createUntil(int start);
 
-    LoopContainer createWhile(int start);
+    <T>LoopContainer<T> createWhile(int start);
 }
