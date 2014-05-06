@@ -13,7 +13,7 @@ import org.scriptkitty.ppi4j.util.TestCaseProvider;
 
 public class TestConvertIncludeStatements extends AbstractConverterTest
 {
-    @Mock private IncludeContainer<Object> mContainer;
+    @Mock private IncludeContainer<Object, Object> mContainer;
 
     @Before @Override public void setup()
     {

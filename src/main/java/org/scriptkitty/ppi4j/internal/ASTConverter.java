@@ -31,7 +31,7 @@ public final class ASTConverter implements IASTConverter
 {
     private static final String main = "main";
 
-    private ConverterDelegate<IncludeStatement, IncludeContainer<?>> includeDelegate;
+    private ConverterDelegate<IncludeStatement, IncludeContainer<?, ?>> includeDelegate;
     // private ConverterDelegate<Statement, StatementContainer> stmtDelegate;
 
     private final IASTObjectCreator creator;
@@ -57,7 +57,7 @@ public final class ASTConverter implements IASTConverter
         this.state = state;
     }
     
-    @Override public BlockContainer<?> convert(BlockStructure struct)
+    @Override public BlockContainer<?, ?> convert(BlockStructure struct)
     {
         boolean isBody = true;
         Element parent = struct.getParent();
@@ -70,9 +70,9 @@ public final class ASTConverter implements IASTConverter
         return creator.createBlock(struct.getStartOffset(), isBody);
     }
 
-    @Override public LoopContainer<?> convert(CompoundStatement stmt)
+    @Override public LoopContainer<?, ?> convert(CompoundStatement stmt)
     {
-        LoopContainer<?> container = LoopContainer.NULL;
+        LoopContainer<?, ?> container = LoopContainer.NULL;
         int start = stmt.getStartOffset();
 
         switch (stmt.getType())
@@ -123,9 +123,9 @@ public final class ASTConverter implements IASTConverter
         return container;
     }
 
-    @Override public IncludeContainer<?> convert(IncludeStatement stmt)
+    @Override public IncludeContainer<?, ?> convert(IncludeStatement stmt)
     {
-        IncludeContainer<?> container = IncludeContainer.NULL;
+        IncludeContainer<?, ?> container = IncludeContainer.NULL;
 
         if (includeDelegate.converts(stmt))
         {
@@ -159,7 +159,7 @@ public final class ASTConverter implements IASTConverter
     /*
      * @see org.scriptkitty.ppi4j.ast.IASTConverter#convert(org.scriptkitty.ppi4j.statement.PackageStatement)
      */
-    @Override public PackageContainer<?> convert(PackageStatement stmt)
+    @Override public PackageContainer<?, ?> convert(PackageStatement stmt)
     {
         return creator.createPackage(stmt.getStartOffset(), stmt.getName());
     }
@@ -167,17 +167,17 @@ public final class ASTConverter implements IASTConverter
     /*
      * @see org.scriptkitty.ppi4j.ast.IASTConverter#convert(org.scriptkitty.ppi4j.statement.ScheduledStatement)
      */
-    @Override public SubContainer<?> convert(ScheduledStatement stmt)
+    @Override public SubContainer<?, ?> convert(ScheduledStatement stmt)
     {
-        SubContainer<?> container = creator.createScheduled(stmt.getStartOffset(), stmt.getName());
+        SubContainer<?, ?> container = creator.createScheduled(stmt.getStartOffset(), stmt.getName());
         addProperties(container, stmt);
 
         return container;
     }
 
-    @Override public StatementContainer<?> convert(Statement stmt)
+    @Override public StatementContainer<?, ?> convert(Statement stmt)
     {
-        StatementContainer<?> container = StatementContainer.NULL;
+        StatementContainer<?, ?> container = StatementContainer.NULL;
 
         // we're really the terminator and not something like: if (...) { 1; }
         if (stmt.isTerminator() && (stmt.getNextSignificantSibling() == null))
@@ -209,9 +209,9 @@ public final class ASTConverter implements IASTConverter
     /*
      * @see org.scriptkitty.ppi4j.ast.IASTConverter#convert(org.scriptkitty.ppi4j.statement.SubStatement)
      */
-    @Override public SubContainer<?> convert(SubStatement stmt)
+    @Override public SubContainer<?, ?> convert(SubStatement stmt)
     {
-        SubContainer<?> container = creator.createSubroutine(stmt.getStartOffset(), stmt.getName());
+        SubContainer<?, ?> container = creator.createSubroutine(stmt.getStartOffset(), stmt.getName());
         addProperties(container, stmt);
 
         return container;
@@ -220,12 +220,12 @@ public final class ASTConverter implements IASTConverter
     /*
      * @see org.scriptkitty.ppi4j.ast.IASTConverter#createMainPackage()
      */
-    @Override public PackageContainer<?> createMainPackage()
+    @Override public PackageContainer<?, ?> createMainPackage()
     {
         return creator.createMainPackage();
     }
 
-    @Override public ModuleContainer<?> startDocument()
+    @Override public ModuleContainer<?, ?> startDocument()
     {
         return creator.createModule();
     }
@@ -233,7 +233,7 @@ public final class ASTConverter implements IASTConverter
     private void addBaseClassesToPackage(IncludeStatement stmt)
     {
         List<String> classes = new ArrayList<>();
-        PackageContainer<?> container = state.getPackage();
+        PackageContainer<?, ?> container = state.getPackage();
 
         for (Element token : stmt.getArguments())
         {
@@ -249,7 +249,7 @@ public final class ASTConverter implements IASTConverter
         }
     }
 
-    private void addProperties(SubContainer<?> container, SubStatement stmt)
+    private void addProperties(SubContainer<?, ?> container, SubStatement stmt)
     {
         // don't set this if we're in a script
         if (!isMainPackage())
@@ -260,13 +260,13 @@ public final class ASTConverter implements IASTConverter
         // TODO: add support for prototypes, attributes, forward statements
     }
 
-    private StatementContainer<?> convertBuiltin(int start, Token bToken, LinkedList<Element> list)
+    private StatementContainer<?, ?> convertBuiltin(int start, Token bToken, LinkedList<Element> list)
     {
         // TODO: determine args
         return creator.createBuiltinCall(start, bToken);
     }
 
-    private StatementContainer<?> convertMethodCall(int start, Token cToken, LinkedList<Element> list)
+    private StatementContainer<?, ?> convertMethodCall(int start, Token cToken, LinkedList<Element> list)
     {
         // remove the '->' token before performing the conversion
         list.remove();
@@ -280,7 +280,7 @@ public final class ASTConverter implements IASTConverter
 
     private String getCurrentPackageName()
     {
-        PackageContainer<?> container = state.getPackage();
+        PackageContainer<?, ?> container = state.getPackage();
 
         if (container != null)
         {
@@ -290,7 +290,7 @@ public final class ASTConverter implements IASTConverter
         return null;
     }
 
-    private StatementContainer<?> handleWordToken(int start, WordToken token, LinkedList<Element> list)
+    private StatementContainer<?, ?> handleWordToken(int start, WordToken token, LinkedList<Element> list)
     {
         if (token.isClassName())
         {

@@ -18,21 +18,21 @@ import org.scriptkitty.ppi4j.structure.BlockStructure;
 
 public interface IASTConverter
 {
-    BlockContainer<?> convert(BlockStructure struct);
+    BlockContainer<?, ?> convert(BlockStructure struct);
 
-    LoopContainer<?> convert(CompoundStatement stmt);
+    LoopContainer<?, ?> convert(CompoundStatement stmt);
 
-    IncludeContainer<?> convert(IncludeStatement stmt);
+    IncludeContainer<?, ?> convert(IncludeStatement stmt);
 
-    PackageContainer<?> convert(PackageStatement stmt);
+    PackageContainer<?, ?> convert(PackageStatement stmt);
 
-    SubContainer<?> convert(ScheduledStatement stmt);
+    SubContainer<?, ?> convert(ScheduledStatement stmt);
 
-    StatementContainer<?> convert(Statement stmt);
+    StatementContainer<?, ?> convert(Statement stmt);
 
-    SubContainer<?> convert(SubStatement stmt);
+    SubContainer<?, ?> convert(SubStatement stmt);
 
-    PackageContainer<?> createMainPackage();
+    PackageContainer<?, ?> createMainPackage();
    
-    ModuleContainer<?> startDocument();
+    ModuleContainer<?, ?> startDocument();
 }

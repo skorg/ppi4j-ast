@@ -2,14 +2,14 @@ package org.scriptkitty.ppi4j.ast.container;
 
 import org.scriptkitty.ppi4j.Statement;
 
-public abstract class IncludeContainer<T> extends AbstractContainer<T>
+public abstract class IncludeContainer<P, C> extends AbstractContainer<P, C>
 {
-    public static final IncludeContainer<Object> NULL = new IncludeContainer<Object>(null)
+    public static final IncludeContainer<Object, Object> NULL = new IncludeContainer<Object, Object>(null)
     {
         // null implementation
     };
 
-    protected IncludeContainer(T include)
+    protected IncludeContainer(P include)
     {
         super(include);
     }

@@ -93,14 +93,14 @@ public final class ASTBuildVisitor extends AbstractNodeVisitor
 
         if (stmt.getType() == Statement.Type.CONTINUE)
         {
-            BlockContainer<?> container = converter.convert(stmt.getBody());
+            BlockContainer<?, ?> container = converter.convert(stmt.getBody());
             state.addToParent(container);
 
             visit(stmt.getBody());
         }
         else
         {
-            LoopContainer<?> container = converter.convert(stmt);
+            LoopContainer<?, ?> container = converter.convert(stmt);
             state.addToParent(container);
 
             if (stmt.hasConditional())
@@ -225,7 +225,7 @@ public final class ASTBuildVisitor extends AbstractNodeVisitor
             state.pop(lastOffset);
         }
 
-        PackageContainer<?> container = converter.convert(stmt);
+        PackageContainer<?, ?> container = converter.convert(stmt);
         state.addToParent(container);
 
         visitChildren(stmt);

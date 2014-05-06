@@ -1,10 +1,10 @@
 package org.scriptkitty.ppi4j.ast.container;
 
-public abstract class AbstractContainer<T> implements IASTContainer<T>
+public abstract class AbstractContainer<P, C> implements IASTContainer<P, C>
 {
-    private T contained;
+    private P contained;
 
-    protected AbstractContainer(T toContain)
+    protected AbstractContainer(P toContain)
     {
         this.contained = toContain;
     }
@@ -12,7 +12,7 @@ public abstract class AbstractContainer<T> implements IASTContainer<T>
     /*
      * @see org.scriptkitty.ppi4j.ast.IASTContainer#get()
      */
-    @Override public T get()
+    @Override public P get()
     {
         return contained;
     }
@@ -30,7 +30,7 @@ public abstract class AbstractContainer<T> implements IASTContainer<T>
         // no-op
     }
 
-    @Override public void add(Object e)
+    @Override public void add(C e)
     {
         // no-op
     }

@@ -1,14 +1,14 @@
 package org.scriptkitty.ppi4j.ast.container;
 
-public abstract class TerminatorContainer<T> extends StatementContainer<T>
+public abstract class TerminatorContainer<P, C> extends StatementContainer<P, C>
 {
-    protected TerminatorContainer(T terminator)
+    protected TerminatorContainer(P terminator)
     {
         super(terminator);
     }
 
-    @Override public final void add(Object e)
+    @Override public final void add(C stmt)
     {
-        throw new RuntimeException("attemted to add [" + e + "] to the terminator container");
+        throw new RuntimeException("attemted to add [" + stmt + "] to the terminator container");
     }
 }

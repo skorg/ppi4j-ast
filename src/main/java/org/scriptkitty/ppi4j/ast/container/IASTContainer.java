@@ -1,12 +1,14 @@
 package org.scriptkitty.ppi4j.ast.container;
 
-public interface IASTContainer<T>
+public interface IASTContainer<P, C>
 {
-    void add(Object e);
+    void add(C e);
 
-    T get();
+    P get();
 
     boolean isEmpty();
 
     void setEnd(int offset);
+    
+    
 }

@@ -7,7 +7,7 @@ import org.scriptkitty.ppi4j.ast.IASTObjectCreator;
 import org.scriptkitty.ppi4j.ast.IStatementConverter;
 import org.scriptkitty.ppi4j.ast.container.IASTContainer;
 
-class ConverterDelegate<S extends Statement, C extends IASTContainer<?>>
+class ConverterDelegate<S extends Statement, C extends IASTContainer<?, ?>>
 {
     private IASTObjectCreator creator;
 

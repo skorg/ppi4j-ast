@@ -1,8 +1,8 @@
 package org.scriptkitty.ppi4j.ast.container;
 
-public abstract class SubContainer<T> extends AbstractContainer<T>
+public abstract class SubContainer<P, C> extends AbstractContainer<P, C>
 {
-    protected SubContainer(T subroutine)
+    protected SubContainer(P subroutine)
     {
         super(subroutine);
     }

@@ -11,8 +11,8 @@ import org.scriptkitty.ppi4j.ast.container.TerminatorContainer;
 public class StateManager
 {
     private boolean initialized;
-
-    private final LinkedList<IASTContainer<?>> stack = new LinkedList<>();
+    
+    private final LinkedList<IASTContainer<?, ?>> stack = new LinkedList<>();
 
     private IASTConverter converter;
     
@@ -22,7 +22,7 @@ public class StateManager
         return this;
     }
     
-    public void addToPackage(IASTContainer<?> container)
+    public void addToPackage(IASTContainer<?, ?> container)
     {
         if (!hasPackage())
         {
@@ -32,7 +32,7 @@ public class StateManager
         add(getPackage(), container);
     }
 
-    public void addToParent(IASTContainer<?> container)
+    public void addToParent(IASTContainer<?, ?> container)
     {
         if (stack.isEmpty())
         {
@@ -50,21 +50,21 @@ public class StateManager
         }
     }
 
-    public PackageContainer<?> getPackage()
+    public PackageContainer<?, ?> getPackage()
     {
-        IASTContainer<?> container = stack.getLast();
+        IASTContainer<?, ?> container = stack.getLast();
 
         if (container instanceof PackageContainer)
         {
-            return (PackageContainer<?>) container;
+            return (PackageContainer<?, ?>) container;
         }
 
-        ListIterator<IASTContainer<?>> iterator = stack.listIterator(stack.size());
+        ListIterator<IASTContainer<?, ?>> iterator = stack.listIterator(stack.size());
         while (iterator.hasPrevious())
         {
             if ((container = iterator.previous()) instanceof PackageContainer)
             {
-                return (PackageContainer<?>) container;
+                return (PackageContainer<?, ?>) container;
             }
         }
 
@@ -76,7 +76,7 @@ public class StateManager
         return (getPackage() != null);
     }
 
-    public void initialize(IASTContainer<?> container)
+    public void initialize(IASTContainer<?, ?> container)
     {
         if (initialized)
         {
@@ -99,7 +99,7 @@ public class StateManager
 
     public void pop(int offset)
     {
-        IASTContainer<?> container = stack.removeLast();
+        IASTContainer<?, ?> container = stack.removeLast();
 
         // if the container's empty, don't set an offset
         if (!container.isEmpty())
@@ -115,8 +115,9 @@ public class StateManager
             pop(offset);
         }
     }
-
-    private void add(IASTContainer<?> parent, IASTContainer<?> container)
+   
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    private void add(IASTContainer parent, IASTContainer container)
     {
         /*
          * don't add the container to the parent if it's empty...
@@ -130,7 +131,9 @@ public class StateManager
         {
             if (container instanceof TerminatorContainer)
             {
-                stack.getFirst().add(container.get());
+                // work around for the IASTContainer being parameratized in the stack
+                IASTContainer first = stack.getFirst();
+                first.add(container.get());
             }
             else
             {

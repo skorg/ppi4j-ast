@@ -1,8 +1,8 @@
 package org.scriptkitty.ppi4j.ast.container;
 
-public abstract class PackageContainer<T> extends AbstractContainer<T>
+public abstract class PackageContainer<P, C> extends AbstractContainer<P, C>
 {
-    public static final PackageContainer<Object> NULL = new PackageContainer<Object>(null)
+    public static final PackageContainer<Object, Object> NULL = new PackageContainer<Object, Object>(null)
     {
         @Override public String getPackageName()
         {
@@ -10,7 +10,7 @@ public abstract class PackageContainer<T> extends AbstractContainer<T>
         }
     };
 
-    protected PackageContainer(T pkg)
+    protected PackageContainer(P pkg)
     {
         super(pkg);
     }

@@ -3,13 +3,13 @@ Bundle-ManifestVersion: 2
 Bundle-Name: ppi4j-ast
 Bundle-SymbolicName: org.scriptkitty.ppi4j-ast
 Bundle-Vendor: scriptkitty.org
-Bundle-Version: 1.2.0.qualifier
+Bundle-Version: 2.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
-Require-Bundle: org.scriptkitty.ppi4j;bundle-version="1.2.0"
-Export-Package: org.scriptkitty.ppi4j.ast,
- org.scriptkitty.ppi4j.ast.container,
- org.scriptkitty.ppi4j.internal;x-internal:=true
+Require-Bundle: org.scriptkitty.ppi4j;bundle-version="2.0.0"
+Export-Package: org.scriptkitty.ppi4j.ast;version="2.0.0",
+ org.scriptkitty.ppi4j.ast.container;version="2.0.0",
+ org.scriptkitty.ppi4j.internal;version="2.0.0";x-internal:=true
 Import-Package: 
  org.hamcrest.core;version="1.3.0";resolution:=optional,
  org.junit;version="4.11.0";resolution:=optional,

@@ -1,8 +1,8 @@
 package org.scriptkitty.ppi4j.ast.container;
 
-public abstract class LoopContainer<T> extends AbstractContainer<T>
+public abstract class LoopContainer<P, C> extends AbstractContainer<P, C>
 {
-    public static LoopContainer<Object> NULL = new LoopContainer<Object>(null)
+    public static LoopContainer<Object, Object> NULL = new LoopContainer<Object, Object>(null)
     {
         @Override public void setEnd(int offset)
         {
@@ -31,12 +31,12 @@ public abstract class LoopContainer<T> extends AbstractContainer<T>
 
     private boolean eCont;
 
-    protected LoopContainer(T stmt)
+    protected LoopContainer(P stmt)
     {
         super(stmt);
     }
 
-    @Override public final void add(Object stmt)
+    @Override public final void add(C stmt)
     {
         if (eCond)
         {
@@ -76,9 +76,9 @@ public abstract class LoopContainer<T> extends AbstractContainer<T>
         eCond = eBody = false;
     }
 
-    protected abstract void addBody(Object stmt);
+    protected abstract void addBody(C stmt);
 
-    protected abstract void addConditional(Object stmt);
+    protected abstract void addConditional(C stmt);
 
-    protected abstract void addContinue(Object stmt);
+    protected abstract void addContinue(C stmt);
 }
