@@ -6,22 +6,21 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.scriptkitty.ppi4j.Document;
 import org.scriptkitty.ppi4j.Token;
-import org.scriptkitty.ppi4j.ast.container.PackageContainer;
 import org.scriptkitty.ppi4j.ast.container.StatementContainer;
 import org.scriptkitty.ppi4j.util.TestCaseProvider;
 
 
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class TestConvertCallStatements extends AbstractConverterTest
-{
-    @Mock private StatementContainer<Object, Object> mContainer;
+{    
+    @Mock private StatementContainer mContainer;
 
-    @Before @Override public void setup()
+    @Before 
+    @Override public void setup()
     {
         super.setup();
-
         // only testing 'simple' statements here, so setup as if we were a script
-        Mockito.when(mCreator.createMainPackage()).thenReturn(PackageContainer.NULL);
-        Mockito.when(mContainer.isEmpty()).thenReturn(false);
+        super.setupAsScript(mContainer);
     }
 
     @Test public void testBuiltin1()

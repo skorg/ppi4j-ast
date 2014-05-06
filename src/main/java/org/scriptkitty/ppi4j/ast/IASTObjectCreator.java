@@ -13,33 +13,33 @@ import org.scriptkitty.ppi4j.ast.container.TerminatorContainer;
 
 public interface IASTObjectCreator
 {
-    <P, C> BlockContainer<P, C> createBlock(int start, boolean isBody);
+    BlockContainer<?, ?> createBlock(int start, boolean isBody);
 
-    <P, C> StatementContainer<P, C> createBuiltinCall(int start, Token bToken);
+    StatementContainer<?, ?> createBuiltinCall(int start, Token bToken);
 
-    <P, C> LoopContainer<P, C> createFor(int start);
+    LoopContainer<?, ?> createFor(int start);
 
-    <P, C> LoopContainer<P, C> createForeach(int start);
+    LoopContainer<?, ?> createForeach(int start);
 
-    <P, C> IncludeContainer<P, C> createInclude(int startOffset, Token mToken);
+    IncludeContainer<?, ?> createInclude(int startOffset, Token mToken);
 
-    <P, C> PackageContainer<P, C> createMainPackage();
+    PackageContainer<?, ?> createMainPackage();
 
-    <P, C>StatementContainer<P, C> createMethodCall(int start, Token cToken, Token mToken);
+    StatementContainer<?, ?> createMethodCall(int start, Token cToken, Token mToken);
 
-    <P, C> ModuleContainer<P, C> createModule();
+    ModuleContainer<?, ?> createModule();
 
-    <P, C>PackageContainer<P, C> createPackage(int start, Token pName);
+    PackageContainer<?, ?> createPackage(int start, Token pName);
 
-    <P, C>SubContainer<P, C> createScheduled(int start, Token sName);
+    SubContainer<?, ?> createScheduled(int start, Token sName);
 
-    <P, C>SubContainer<P, C> createSubroutine(int start, Token sName);
+    SubContainer<?, ?> createSubroutine(int start, Token sName);
 
-    //<P, C> LoopContainer<P, C> createIf(int start);
+    //LoopContainer<?, ?> createIf(int start);
 
-    <P, C>TerminatorContainer<P, C> createTerminator(int start);
+    TerminatorContainer<?, ?> createTerminator(int start);
 
-    <P, C>LoopContainer<P, C> createUntil(int start);
+    LoopContainer<?, ?> createUntil(int start);
 
-    <P, C>LoopContainer<P, C> createWhile(int start);
+    LoopContainer<?, ?> createWhile(int start);
 }
